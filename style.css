@@ -1,6 +1,27 @@
 /**********************************************
 *** GENERAL
 **********************************************/
+.win {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 520px;
+    color: #555;
+    font-size: 18px;
+    font-family: 'lato';
+    text-align: center;
+    padding: 10px;
+    width: 160px;
+    text-transform: uppercase;
+}
+
+#dice1 {
+    margin-top: -10px;
+}
+
+#dice2 {
+    margin-top: 100px;
+}
 
 * {
     margin: 0;

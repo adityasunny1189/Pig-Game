@@ -1,34 +1,44 @@
-/*
-GAME RULES:
-
-- The game has 2 players, playing in rounds
-- In each turn, a player rolls a dice as many times as he whishes. Each result get added to his ROUND score
-- BUT, if the player rolls a 1, all his ROUND score gets lost. After that, it's the next player's turn
-- The player can choose to 'Hold', which means that his ROUND score gets added to his GLBAL score. After that, it's the next player's turn
-- The first player to reach 100 points on GLOBAL score wins the game
-
-*/
-
+// Declaring variables
 var scores = [];
 var activePlayer;
 var roundScore;
 var gamePlaying;
 var finalScore;
 
+
+// Starting point of the code starts with calling the function which works
+// on the principle of hoisting
 startPoint();
 
-document.querySelector('.win-sc').addEventListener('click', function() {
-	finalScore = Number(document.querySelector('.win').value);
-})
 
+// Dom manipulation of the button whose class is but-rol and it works when
+// ever the button for rolling the dice is pressed
 document.querySelector(".btn-roll").addEventListener('click', function() {
 	if(gamePlaying) {
-		var dice = Math.floor(Math.random() * 6) + 1;
-		document.querySelector(".dice").style.display = 'block';
-		document.querySelector(".dice").src = 'dice-' + dice + '.png';
+		// Calling math function to get random values int he given range
+		// for our dice to generate random dice no's
+		var dice1 = Math.floor(Math.random() * 6) + 1;
+		var dice2 = Math.floor(Math.random() * 6) + 1;
+
+		// Displaying our dice images which was set style none in 
+		// the start function section
+		document.querySelector("#dice1").style.display = 'block';
+		document.querySelector("#dice2").style.display = 'block';
+		document.querySelector("#dice1").src = 'dice-' + dice1 + '.png';
+		document.querySelector("#dice2").src = 'dice-' + dice2 + '.png';
+
+		// Selecting the value entered in the enter score section
+		finalScore = Number(document.querySelector('.win').value);
 	
-		if(dice > 1) {
-			roundScore += dice;
+
+		// Game logic
+		if(dice1 === 6 && dice2 === 6) {
+			scores[activePlayer] = 0;
+			document.querySelector("#score-" + activePlayer).textContent = scores[activePlayer];
+			nextPlayer();
+		}
+		else if(dice1 > 1 || dice2 > 1) {
+			roundScore += dice1 + dice2;
 			document.querySelector("#current-" + activePlayer).textContent = roundScore;
 		}
 		else {
@@ -37,17 +47,26 @@ document.querySelector(".btn-roll").addEventListener('click', function() {
 	}
 });
 
+
+// Dom manipulation for the button btn-new which starts the new game when pressed 
+// and also sets everything from starting
 document.querySelector(".btn-new").addEventListener('click', function() {
 	startPoint();
 });
 
+
+// Dom manipulation for hold button which switches between the players
 document.querySelector(".btn-hold").addEventListener("click", function() {
 	if(gamePlaying) {
+		// Sets the active score to the round score
 		scores[activePlayer] += roundScore;
 		document.querySelector("#score-" + activePlayer).textContent = scores[activePlayer];
+
+		// Game logic for deciding winner and then stoping the game
 		if(scores[activePlayer] >= finalScore) {
 			document.querySelector('#name-' + activePlayer).textContent = 'Winner';
-			document.querySelector('.dice').style.display = "none";
+			document.querySelector('#dice1').style.display = "none";
+			document.querySelector('#dice2').style.display = "none";
 			document.querySelector('.player-' + activePlayer + '-panel').classList.add('winner');
 			document.querySelector('.player-' + activePlayer + '-panel').classList.remove('active');
 			gamePlaying = false;
@@ -57,6 +76,8 @@ document.querySelector(".btn-hold").addEventListener("click", function() {
 	}
 });
 
+
+// Function to call next player or switch between the players
 function nextPlayer() {
 	if(gamePlaying) {
 		roundScore = 0;
@@ -68,11 +89,15 @@ function nextPlayer() {
 	}
 }
 
+
+// Starting point of the program
 function startPoint() {
 	scores = [0, 0];
 	activePlayer = 0;
 	roundScore = 0;
 	gamePlaying = true;
+
+	// Sets every thing on the screen to some default value
 	document.querySelector('.win').textContent = 'Win Socre';
 	document.querySelector('#name-0').textContent = 'Player 1';
 	document.querySelector('#name-1').textContent = 'Player 2';
@@ -85,5 +110,6 @@ function startPoint() {
 	document.querySelector("#score-1").textContent = '0';
 	document.querySelector("#current-0").textContent = '0';
 	document.querySelector("#current-1").textContent = '0';
-	document.querySelector(".dice").style.display = "none";
+	document.querySelector("#dice1").style.display = "none";
+	document.querySelector("#dice2").style.display = "none";
 }
